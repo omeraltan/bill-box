@@ -15,5 +15,9 @@ public interface AlertRepository extends JpaRepository<Alert, UUID> {
 
     boolean existsByOrganizationIdAndInvoiceIdAndType(UUID organizationId, UUID invoiceId, AlertType type);
 
+    boolean existsByOrganizationIdAndWarrantyIdAndType(UUID organizationId, UUID warrantyId, AlertType type);
+
+    boolean existsByOrganizationIdAndReceiptIdAndType(UUID organizationId, UUID receiptId, AlertType type);
+
     Optional<Alert> findByIdAndOrganizationId(UUID id, UUID organizationId);
 }

@@ -15,5 +15,6 @@ public class AlertScheduler {
     @Scheduled(cron = "0 15 8 * * *")
     public void dailyScan() {
         alertService.scanDueInvoices();
+        alertService.scanCoverages();
     }
 }

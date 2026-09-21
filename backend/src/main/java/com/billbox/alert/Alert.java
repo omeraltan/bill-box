@@ -4,6 +4,8 @@ import com.billbox.common.enums.AlertSeverity;
 import com.billbox.common.enums.AlertType;
 import com.billbox.invoice.Invoice;
 import com.billbox.organization.Organization;
+import com.billbox.receipt.Receipt;
+import com.billbox.warranty.Warranty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -36,6 +38,14 @@ public class Alert {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "invoice_id")
     private Invoice invoice;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "receipt_id")
+    private Receipt receipt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "warranty_id")
+    private Warranty warranty;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 40)

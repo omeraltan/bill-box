@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Chart } from "primereact/chart";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Tag } from "primereact/tag";
 import { api } from "../api/client";
 import type { Dashboard } from "../api/types";
-import { dateTr, directionLabel, money, statusLabel } from "../format";
+import { coverageLabel, dateTr, directionLabel, money, statusLabel } from "../format";
 
 export function DashboardPage() {
+  const navigate = useNavigate();
   const [data, setData] = useState<Dashboard | null>(null);
 
   useEffect(() => {
@@ -53,7 +55,7 @@ export function DashboardPage() {
     <div className="flex flex-column gap-3">
       <div>
         <h2 className="page-title">Özet</h2>
-        <p className="page-subtitle">Bu ayın nakit akışı, vadeler ve uyarılar</p>
+        <p className="page-subtitle">Faturalar, fişler ve yaklaşan garantiler</p>
       </div>
       <div className="kpi-grid">
         <div className="kpi-card">
@@ -69,10 +71,12 @@ export function DashboardPage() {
           <strong>{money(data.monthNet)}</strong>
         </div>
         <div className="kpi-card">
-          <span>Geciken / bekleyen</span>
-          <strong>
-            {data.overdueCount} / {data.pendingCount}
-          </strong>
+          <span>Bu ay fiş</span>
+          <strong>{money(data.monthReceipts)}</strong>
+        </div>
+        <div className="kpi-card">
+          <span>Yaklaşan garanti</span>
+          <strong>{data.expiringWarrantyCount}</strong>
         </div>
       </div>
       <div className="grid">
@@ -88,6 +92,24 @@ export function DashboardPage() {
             <Chart type="line" data={trendChart} />
           </div>
         </div>
+      </div>
+      <div className="panel">
+        <h3>Yaklaşan garantiler</h3>
+        {data.expiringWarranties.length === 0 ? (
+          <p className="page-subtitle">Önümüzdeki günlerde bitecek garanti yok.</p>
+        ) : (
+          <div className="warranty-list">
+            {data.expiringWarranties.map((item) => (
+              <button key={item.id} type="button" className="warranty-row" onClick={() => navigate(`/garantiler/${item.id}`)}>
+                <div>
+                  <strong>{item.productName}</strong>
+                  <span>{item.brand || "Marka yok"} · {dateTr(item.warrantyEndsOn)}</span>
+                </div>
+                <Tag value={coverageLabel[item.status]} severity={item.status === "EXPIRING" ? "warning" : "success"} />
+              </button>
+            ))}
+          </div>
+        )}
       </div>
       <div className="panel">
         <h3>Son faturalar</h3>

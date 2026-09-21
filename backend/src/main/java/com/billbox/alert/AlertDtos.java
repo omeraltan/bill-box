@@ -14,7 +14,9 @@ public record AlertDtos(
         String message,
         UUID invoiceId,
         Instant createdAt,
-        Instant readAt
+        Instant readAt,
+        UUID receiptId,
+        UUID warrantyId
 ) {
     public static AlertDtos from(Alert alert) {
         return new AlertDtos(
@@ -25,7 +27,9 @@ public record AlertDtos(
                 alert.getMessage(),
                 alert.getInvoice() == null ? null : alert.getInvoice().getId(),
                 alert.getCreatedAt(),
-                alert.getReadAt()
+                alert.getReadAt(),
+                alert.getReceipt() == null ? null : alert.getReceipt().getId(),
+                alert.getWarranty() == null ? null : alert.getWarranty().getId()
         );
     }
 }

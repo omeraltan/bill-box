@@ -23,7 +23,7 @@ export function AlertsPage() {
       <div className="toolbar">
         <div>
           <h2 className="page-title">Uyarılar</h2>
-          <p className="page-subtitle">Vade, gecikme ve yüksek tutar bildirimleri</p>
+          <p className="page-subtitle">Vade, iade süresi ve garanti bitişi</p>
         </div>
         <Button label="Tümünü okundu işaretle" onClick={async () => { await api("/api/alerts/read-all", { method: "POST" }); load(); }} />
       </div>
@@ -41,7 +41,9 @@ export function AlertsPage() {
                 disabled={!!row.readAt}
                 onClick={async () => {
                   await api(`/api/alerts/${row.id}/read`, { method: "POST" });
-                  if (row.invoiceId) navigate(`/faturalar/${row.invoiceId}`);
+                  if (row.warrantyId) navigate(`/garantiler/${row.warrantyId}`);
+                  else if (row.receiptId) navigate(`/fisler/${row.receiptId}`);
+                  else if (row.invoiceId) navigate(`/faturalar/${row.invoiceId}`);
                   load();
                 }}
               />
