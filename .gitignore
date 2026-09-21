@@ -1,0 +1,61 @@
+# İşletim sistemi
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Editör ve IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+!.vscode/extensions.json
+.project
+.classpath
+.settings/
+.factorypath
+nbproject/
+*.swp
+*.swo
+*~
+
+# Java ve Maven
+backend/target/
+target/
+*.class
+*.jar
+*.war
+*.ear
+hs_err_pid*
+replay_pid*
+
+# Node, Vite ve TypeScript
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Ortam ve gizliler
+.env
+.env.*
+!.env.example
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+application-local.yml
+application-local.yaml
+**/application-local.yml
+
+# Uygulama verisi
+storage/
+data/
+.billbox/
+*.log
+logs/

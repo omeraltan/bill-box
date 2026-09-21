@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: bill-box
+  datasource:
+    url: jdbc:postgresql://localhost:5432/billbox
+    username: billbox
+    password: billbox
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 25MB
+
+server:
+  port: 8080
+
+billbox:
+  jwt:
+    secret: ${BILLBOX_JWT_SECRET:change-this-to-a-long-random-secret-key-at-least-256-bits-long!!}
+    expiration-ms: 86400000
+  storage:
+    root: ${BILLBOX_STORAGE:${user.home}/.billbox/storage}
+  cors:
+    allowed-origins: http://localhost:5173
