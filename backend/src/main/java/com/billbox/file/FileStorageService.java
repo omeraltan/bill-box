@@ -20,9 +20,13 @@ public class FileStorageService {
         Files.createDirectories(this.root);
     }
 
-    public String store(UUID organizationId, UUID invoiceId, MultipartFile file) throws IOException {
+    public String store(UUID organizationId, UUID ownerId, MultipartFile file) throws IOException {
+        return store(organizationId, "invoices", ownerId, file);
+    }
+
+    public String store(UUID organizationId, String area, UUID ownerId, MultipartFile file) throws IOException {
         String safeName = sanitize(file.getOriginalFilename());
-        String key = organizationId + "/" + invoiceId + "/" + UUID.randomUUID() + "-" + safeName;
+        String key = organizationId + "/" + area + "/" + ownerId + "/" + UUID.randomUUID() + "-" + safeName;
         Path target = root.resolve(key).normalize();
         if (!target.startsWith(root)) {
             throw new IOException("Geçersiz dosya yolu.");

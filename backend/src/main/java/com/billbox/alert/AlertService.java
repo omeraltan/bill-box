@@ -6,7 +6,12 @@ import com.billbox.common.enums.InvoiceStatus;
 import com.billbox.common.exception.ApiException;
 import com.billbox.invoice.Invoice;
 import com.billbox.invoice.InvoiceRepository;
+import com.billbox.receipt.Receipt;
+import com.billbox.receipt.ReceiptRepository;
 import com.billbox.security.AuthPrincipal;
+import com.billbox.warranty.CoverageStatus;
+import com.billbox.warranty.Warranty;
+import com.billbox.warranty.WarrantyRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,10 +30,19 @@ public class AlertService {
 
     private final AlertRepository alertRepository;
     private final InvoiceRepository invoiceRepository;
+    private final WarrantyRepository warrantyRepository;
+    private final ReceiptRepository receiptRepository;
 
-    public AlertService(AlertRepository alertRepository, InvoiceRepository invoiceRepository) {
+    public AlertService(
+            AlertRepository alertRepository,
+            InvoiceRepository invoiceRepository,
+            WarrantyRepository warrantyRepository,
+            ReceiptRepository receiptRepository
+    ) {
         this.alertRepository = alertRepository;
         this.invoiceRepository = invoiceRepository;
+        this.warrantyRepository = warrantyRepository;
+        this.receiptRepository = receiptRepository;
     }
 
     @Transactional(readOnly = true)
@@ -103,6 +117,71 @@ public class AlertService {
                 today.plusDays(3)
         );
         invoices.forEach(this::evaluateInvoice);
+    }
+
+    @Transactional
+    public void evaluateWarranty(Warranty warranty) {
+        LocalDate today = LocalDate.now();
+        CoverageStatus status = CoverageStatus.of(warranty.getWarrantyEndsOn(), today);
+        if (status == CoverageStatus.EXPIRED) {
+            createForWarranty(warranty, AlertType.WARRANTY_EXPIRED, AlertSeverity.CRITICAL,
+                    "Garantisi biten ürün",
+                    warranty.getProductName() + " garantisi " + warranty.getWarrantyEndsOn().format(DATE) + " tarihinde bitti.");
+        } else if (status == CoverageStatus.EXPIRING) {
+            createForWarranty(warranty, AlertType.WARRANTY_EXPIRING, AlertSeverity.WARNING,
+                    "Garantisi yaklaşan ürün",
+                    warranty.getProductName() + " garantisi " + warranty.getWarrantyEndsOn().format(DATE) + " tarihinde bitiyor.");
+        }
+    }
+
+    @Transactional
+    public void evaluateReceipt(Receipt receipt) {
+        LocalDate today = LocalDate.now();
+        if (receipt.getReturnUntil() == null || receipt.getReturnUntil().isBefore(today)) {
+            return;
+        }
+        if (!receipt.getReturnUntil().isAfter(today.plusDays(3))) {
+            createForReceipt(receipt, AlertType.RETURN_CLOSING, AlertSeverity.WARNING,
+                    "İade süresi kapanıyor",
+                    receipt.getMerchantName() + " fişinin iade süresi " + receipt.getReturnUntil().format(DATE) + " tarihinde bitiyor.");
+        }
+    }
+
+    @Transactional
+    public void scanCoverages() {
+        LocalDate today = LocalDate.now();
+        warrantyRepository.findByWarrantyEndsOnLessThanEqual(today.plusDays(30)).forEach(this::evaluateWarranty);
+        receiptRepository.findByReturnUntilBetween(today, today.plusDays(3)).forEach(this::evaluateReceipt);
+    }
+
+    private void createForWarranty(Warranty warranty, AlertType type, AlertSeverity severity, String title, String message) {
+        UUID orgId = warranty.getOrganization().getId();
+        if (alertRepository.existsByOrganizationIdAndWarrantyIdAndType(orgId, warranty.getId(), type)) {
+            return;
+        }
+        Alert alert = new Alert();
+        alert.setOrganization(warranty.getOrganization());
+        alert.setWarranty(warranty);
+        alert.setType(type);
+        alert.setSeverity(severity);
+        alert.setTitle(title);
+        alert.setMessage(message);
+        alertRepository.save(alert);
+    }
+
+    private void createForReceipt(Receipt receipt, AlertType type, AlertSeverity severity, String title, String message) {
+        UUID orgId = receipt.getOrganization().getId();
+        if (alertRepository.existsByOrganizationIdAndReceiptIdAndType(orgId, receipt.getId(), type)) {
+            return;
+        }
+        Alert alert = new Alert();
+        alert.setOrganization(receipt.getOrganization());
+        alert.setReceipt(receipt);
+        alert.setType(type);
+        alert.setSeverity(severity);
+        alert.setTitle(title);
+        alert.setMessage(message);
+        alertRepository.save(alert);
     }
 
     private void createOnce(Invoice invoice, AlertType type, AlertSeverity severity, String title, String message) {

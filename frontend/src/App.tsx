@@ -13,8 +13,15 @@ import { LoginPage } from "./pages/LoginPage";
 import { RecurringPage } from "./pages/RecurringPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { ReportsPage } from "./pages/ReportsPage";
+import { ReceiptDetailPage } from "./pages/ReceiptDetailPage";
+import { ReceiptFormPage } from "./pages/ReceiptFormPage";
+import { ReceiptsPage } from "./pages/ReceiptsPage";
 import { SettingsPage } from "./pages/SettingsPage";
+import { VaultPage } from "./pages/VaultPage";
 import { VendorsPage } from "./pages/VendorsPage";
+import { WarrantiesPage } from "./pages/WarrantiesPage";
+import { WarrantyDetailPage } from "./pages/WarrantyDetailPage";
+import { WarrantyFormPage } from "./pages/WarrantyFormPage";
 
 function Protected({ children }: { children: ReactNode }) {
   const { user } = useAuth();
@@ -38,10 +45,19 @@ export default function App() {
         }
       >
         <Route index element={<DashboardPage />} />
+        <Route path="kasa" element={<VaultPage />} />
         <Route path="faturalar" element={<InvoicesPage />} />
         <Route path="faturalar/yeni" element={<InvoiceFormPage />} />
         <Route path="faturalar/:id" element={<InvoiceDetailPage />} />
         <Route path="faturalar/:id/duzenle" element={<InvoiceFormPage />} />
+        <Route path="fisler" element={<ReceiptsPage />} />
+        <Route path="fisler/yeni" element={<ReceiptFormPage />} />
+        <Route path="fisler/:id" element={<ReceiptDetailPage />} />
+        <Route path="fisler/:id/duzenle" element={<ReceiptFormPage />} />
+        <Route path="garantiler" element={<WarrantiesPage />} />
+        <Route path="garantiler/yeni" element={<WarrantyFormPage />} />
+        <Route path="garantiler/:id" element={<WarrantyDetailPage />} />
+        <Route path="garantiler/:id/duzenle" element={<WarrantyFormPage />} />
         <Route path="cariler" element={<VendorsPage />} />
         <Route path="kategoriler" element={<CategoriesPage />} />
         <Route path="tekrarlayan" element={<RecurringPage />} />

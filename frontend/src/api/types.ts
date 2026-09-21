@@ -3,7 +3,9 @@ export type InvoiceStatus = "DRAFT" | "PENDING" | "PAID" | "OVERDUE" | "CANCELLE
 export type PartyType = "SUPPLIER" | "CUSTOMER" | "BOTH";
 export type CategoryKind = "EXPENSE" | "INCOME" | "BOTH";
 export type RecurringInterval = "WEEKLY" | "MONTHLY" | "QUARTERLY" | "YEARLY";
-export type AlertType = "DUE_SOON" | "OVERDUE" | "HIGH_AMOUNT" | "BUDGET_EXCEEDED" | "PRICE_INCREASE";
+export type AlertType = "DUE_SOON" | "OVERDUE" | "HIGH_AMOUNT" | "BUDGET_EXCEEDED" | "PRICE_INCREASE" | "WARRANTY_EXPIRING" | "WARRANTY_EXPIRED" | "RETURN_CLOSING";
+export type VaultKind = "BILL" | "RECEIPT" | "WARRANTY";
+export type CoverageStatus = "ACTIVE" | "EXPIRING" | "EXPIRED";
 export type AlertSeverity = "INFO" | "WARNING" | "CRITICAL";
 
 export interface AuthResponse {
@@ -103,6 +105,8 @@ export interface AlertItem {
   invoiceId?: string;
   createdAt: string;
   readAt?: string;
+  receiptId?: string;
+  warrantyId?: string;
 }
 
 export interface Dashboard {
@@ -117,6 +121,98 @@ export interface Dashboard {
   monthlyIncome: NamedAmount[];
   recentInvoices: InvoiceSummary[];
   latestAlerts: AlertItem[];
+  monthReceipts: number;
+  expiringWarrantyCount: number;
+  expiringWarranties: WarrantyBrief[];
+}
+
+export interface WarrantyBrief {
+  id: string;
+  productName: string;
+  brand?: string;
+  warrantyEndsOn: string;
+  status: CoverageStatus;
+  daysRemaining: number;
+}
+
+export interface VaultItem {
+  kind: VaultKind;
+  id: string;
+  title: string;
+  subtitle?: string;
+  occurredOn?: string;
+  highlightOn?: string;
+  amount?: number;
+  currency?: string;
+  status: string;
+  categoryName?: string;
+}
+
+export interface ReceiptItem {
+  id?: string;
+  description: string;
+  quantity: number;
+  unitPrice: number;
+  lineTotal?: number;
+  warrantyMonths?: number | null;
+}
+
+export interface StoredFile {
+  id: string;
+  originalName: string;
+  contentType: string;
+  sizeBytes: number;
+  createdAt: string;
+}
+
+export interface ReceiptSummary {
+  id: string;
+  merchantName: string;
+  purchasedOn: string;
+  returnUntil?: string;
+  currency: string;
+  total: number;
+  categoryName?: string;
+  categoryColor?: string;
+  itemCount: number;
+  fileCount: number;
+}
+
+export interface ReceiptDetail {
+  id: string;
+  vendorId?: string;
+  vendorName?: string;
+  categoryId?: string;
+  categoryName?: string;
+  merchantName: string;
+  purchasedOn: string;
+  currency: string;
+  total: number;
+  paymentMethod?: string;
+  returnUntil?: string;
+  notes?: string;
+  items: ReceiptItem[];
+  files: StoredFile[];
+}
+
+export interface WarrantySummary {
+  id: string;
+  productName: string;
+  brand?: string;
+  merchantName?: string;
+  purchasedOn: string;
+  warrantyEndsOn: string;
+  returnUntil?: string;
+  status: CoverageStatus;
+  daysRemaining: number;
+  receiptId?: string;
+}
+
+export interface WarrantyDetail extends WarrantySummary {
+  vendorId?: string;
+  serialNumber?: string;
+  notes?: string;
+  files: StoredFile[];
 }
 
 export interface RecurringRule {
