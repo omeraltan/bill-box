@@ -3,5 +3,10 @@ type LogoMarkProps = {
 };
 
 export function LogoMark({ className }: LogoMarkProps) {
-  return <img className={className} src="/favicon.svg" alt="" width={32} height={32} />;
+  const classes = className ? `logo-mark ${className}` : "logo-mark";
+  return (
+    <span className={classes}>
+      <img src="/favicon.svg" alt="" width={32} height={32} />
+    </span>
+  );
 }

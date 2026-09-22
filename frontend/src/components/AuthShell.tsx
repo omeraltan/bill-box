@@ -3,10 +3,36 @@ import { Link } from "react-router-dom";
 import { LogoMark } from "./LogoMark";
 
 const points = [
-  { icon: "pi pi-file", title: "Faturalar", text: "Elektrik, su ve doğalgaz" },
-  { icon: "pi pi-ticket", title: "Fişler", text: "Alışveriş ve iade süresi" },
-  { icon: "pi pi-shield", title: "Garantiler", text: "Kapsamın bitiş tarihi" },
-];
+  { id: "bill", title: "Faturalar", text: "Elektrik, su ve doğalgaz" },
+  { id: "receipt", title: "Fişler", text: "Alışveriş ve iade süresi" },
+  { id: "warranty", title: "Garantiler", text: "Kapsamın bitiş tarihi" },
+] as const;
+
+function PointIcon({ name }: { name: "bill" | "receipt" | "warranty" }) {
+  return (
+    <svg className={`point-icon point-${name}`} viewBox="0 0 24 24" aria-hidden="true">
+      {name === "bill" && (
+        <>
+          <path d="M7 4.75h6.1L17.25 8.9V18.6c0 .8-.65 1.45-1.45 1.45H7A1.45 1.45 0 0 1 5.55 18.6V6.2c0-.8.65-1.45 1.45-1.45z" />
+          <path d="M13.1 4.75V9h4.15" />
+          <path d="M8.4 12.7h6.3M8.4 15.6h4.1" />
+        </>
+      )}
+      {name === "receipt" && (
+        <>
+          <path d="M6.4 6.2h11.2v3.05a1.55 1.55 0 0 0 0 3.1v3.05H6.4v-3.05a1.55 1.55 0 0 0 0-3.1V6.2z" />
+          <path d="M9 9.15h6M9 12h6M9 14.85h3.6" />
+        </>
+      )}
+      {name === "warranty" && (
+        <>
+          <path d="M12 4.35 18.15 6.7v4.85c0 3.15-2.25 5.35-6.15 6.9-3.9-1.55-6.15-3.75-6.15-6.9V6.7L12 4.35z" />
+          <path d="M9.35 11.85 11.15 13.65 14.7 10.1" />
+        </>
+      )}
+    </svg>
+  );
+}
 
 export function AuthShell({ children }: { children: ReactNode }) {
   return (
@@ -35,7 +61,7 @@ export function AuthShell({ children }: { children: ReactNode }) {
           <ul className="auth-points">
             {points.map((point) => (
               <li key={point.title}>
-                <i className={point.icon} aria-hidden="true" />
+                <PointIcon name={point.id} />
                 <div>
                   <strong>{point.title}</strong>
                   <span>{point.text}</span>

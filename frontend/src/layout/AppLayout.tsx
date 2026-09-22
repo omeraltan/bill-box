@@ -56,7 +56,7 @@ export function AppLayout() {
     <div className="app-shell">
       <aside className="sidebar">
         <div className="brand">
-          <LogoMark className="brand-mark" />
+          <LogoMark />
           <div>
             <h1>Bill Box</h1>
             <p>{user?.organizationName}</p>
