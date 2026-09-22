@@ -224,12 +224,9 @@ a {
 .brand-mark {
   width: 40px;
   height: 40px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #14b8a6, #0f766e);
-  display: grid;
-  place-items: center;
-  font-weight: 700;
-  color: white;
+  display: block;
+  border-radius: 10px;
+  box-shadow: 0 8px 18px rgba(15, 118, 110, 0.28);
 }
 
 .brand h1 {
@@ -358,13 +355,17 @@ a {
 .auth-mark {
   width: 44px;
   height: 44px;
-  border-radius: 14px;
-  display: grid;
-  place-items: center;
-  color: white;
-  font-weight: 700;
-  background: linear-gradient(145deg, #2dd4bf, #0f766e);
+  display: block;
+  flex: none;
+  border-radius: 11px;
   box-shadow: 0 10px 24px rgba(15, 118, 110, 0.35);
+}
+
+.auth-mark img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: inherit;
 }
 
 .auth-copy,
@@ -670,6 +671,217 @@ a {
   font-size: 0.8rem;
 }
 
+.vkbd-toggle,
+.vkbd {
+  width: 100%;
+  margin-top: 0.85rem;
+}
+
+.vkbd-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 2.75rem;
+  border: 1px solid #d5dee7;
+  border-radius: 12px;
+  background: #f8fafc;
+  color: #0f2744;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.vkbd-toggle:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+.vkbd-toggle:focus-visible,
+.vkbd-close:focus-visible,
+.vkbd-target button:focus-visible {
+  outline: 2px solid #0f766e;
+  outline-offset: 2px;
+}
+
+.vkbd {
+  padding: 0.7rem;
+  border: 1px solid #d5dee7;
+  border-radius: 16px;
+  background: #f8fafc;
+}
+
+.vkbd-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.55rem;
+}
+
+.vkbd-head > span {
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.vkbd-target {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.15rem;
+  border-radius: 999px;
+  background: #e8eef3;
+}
+
+.vkbd-target button,
+.vkbd-close {
+  border: 0;
+  background: transparent;
+  color: #334155;
+  font: inherit;
+  cursor: pointer;
+}
+
+.vkbd-target button {
+  min-height: 1.7rem;
+  padding: 0 0.7rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 650;
+}
+
+.vkbd-target button[aria-pressed="true"] {
+  background: white;
+  color: #0f2744;
+  box-shadow: 0 1px 2px rgba(15, 39, 68, 0.08);
+}
+
+.vkbd-close {
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 8px;
+  color: #64748b;
+}
+
+.vkbd-close:hover {
+  background: #e8eef3;
+  color: #0f2744;
+}
+
+.vkbd-row {
+  display: grid;
+  gap: 0.22rem;
+}
+
+.vkbd-row + .vkbd-row {
+  margin-top: 0.22rem;
+}
+
+.vkbd-row-12 {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.vkbd-row-home {
+  grid-template-columns: repeat(11, minmax(0, 1fr));
+  padding: 0 4.1%;
+}
+
+.vkbd-row-shift {
+  grid-template-columns: 1.35fr repeat(9, minmax(0, 1fr)) 1.35fr;
+}
+
+.vkbd-row-10 {
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+}
+
+.vkbd-util {
+  grid-template-columns: 0.9fr 1.35fr 2.2fr 0.75fr 0.75fr;
+}
+
+.vkbd-symbol-util {
+  grid-template-columns: 0.9fr 1.35fr 2.4fr 1fr;
+}
+
+.vkbd-key {
+  min-width: 0;
+  min-height: 2.45rem;
+  padding: 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  color: #0f2744;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 650;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.vkbd-fn {
+  color: #334155;
+  background: #eef3f7;
+  font-size: 0.82rem;
+}
+
+.vkbd-clear {
+  font-size: 0.72rem;
+}
+
+.vkbd-space {
+  position: relative;
+}
+
+.vkbd-space::before {
+  content: "";
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  top: 50%;
+  height: 3px;
+  border-radius: 999px;
+  background: #cbd5e1;
+  transform: translateY(-50%);
+}
+
+.vkbd-key.is-on {
+  background: #0f2744;
+  border-color: #0f2744;
+  color: white;
+}
+
+.vkbd-key:active {
+  background: #0f2744;
+  border-color: #0f2744;
+  color: white;
+}
+
+@media (hover: hover) {
+  .vkbd-key:hover {
+    border-color: #99d5cf;
+    background: #f3fbfa;
+  }
+
+  .vkbd-key.is-on:hover,
+  .vkbd-key:active {
+    background: #0f2744;
+    border-color: #0f2744;
+    color: white;
+  }
+}
+
+@media (max-width: 1024px), (pointer: coarse) {
+  .vkbd-toggle,
+  .vkbd {
+    display: none;
+  }
+}
+
 @media (max-width: 800px) {
   .auth-screen {
     height: auto;
@@ -703,6 +915,10 @@ a {
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  .vkbd {
+    animation: auth-rise 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
   .doc-card {
     animation:
       auth-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both,

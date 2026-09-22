@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
+import { LogoMark } from "./LogoMark";
 
 const points = [
   { icon: "pi pi-file", title: "Faturalar", text: "Elektrik, su ve doğalgaz" },
@@ -13,7 +14,7 @@ export function AuthShell({ children }: { children: ReactNode }) {
       <section className="auth-panel">
         <div className="auth-brand">
           <Link to="/giris" className="auth-mark" aria-label="Bill Box giriş">
-            B
+            <LogoMark />
           </Link>
           <div>
             <strong>Bill Box</strong>
