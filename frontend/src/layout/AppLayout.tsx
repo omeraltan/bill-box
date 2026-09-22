@@ -4,6 +4,7 @@ import { Button } from "primereact/button";
 import { useEffect, useState } from "react";
 import { api } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
+import { LogoMark } from "../components/LogoMark";
 
 const groups = [
   {
@@ -55,7 +56,7 @@ export function AppLayout() {
     <div className="app-shell">
       <aside className="sidebar">
         <div className="brand">
-          <div className="brand-mark">B</div>
+          <LogoMark className="brand-mark" />
           <div>
             <h1>Bill Box</h1>
             <p>{user?.organizationName}</p>

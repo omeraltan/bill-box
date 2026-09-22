@@ -4,6 +4,7 @@ import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import { AuthShell } from "../components/AuthShell";
+import { VirtualKeyboard } from "../components/VirtualKeyboard";
 import { useAuth } from "../auth/AuthContext";
 import { useCapsLock } from "../auth/useCapsLock";
 
@@ -81,9 +82,10 @@ export function LoginPage() {
             <i className="pi pi-envelope" aria-hidden="true" />
             <InputText
               id="email"
-              type="email"
+              type="text"
               inputMode="email"
               autoComplete="email"
+              spellCheck={false}
               value={email}
               onChange={(event) => {
                 setEmail(event.target.value);
@@ -141,6 +143,20 @@ export function LoginPage() {
             </small>
           )}
         </label>
+
+        <VirtualKeyboard
+          email={email}
+          password={password}
+          disabled={loading}
+          onEmailChange={(value) => {
+            setEmail(value);
+            setEmailError("");
+          }}
+          onPasswordChange={(value) => {
+            setPassword(value);
+            setPasswordError("");
+          }}
+        />
 
         <p className="auth-forgot">
           <Link to="/sifremi-unuttum">Şifremi unuttum</Link>

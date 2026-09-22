@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img">
+  <title>Bill Box</title>
+  <rect width="32" height="32" rx="8" fill="#0f766e"/>
+  <rect x="11.25" y="5.25" width="9.5" height="12" rx="1.5" fill="#ffffff"/>
+  <rect x="13.15" y="7.7" width="5.7" height="1.45" rx="0.72" fill="#c4a35a"/>
+  <rect x="6.25" y="13.75" width="19.5" height="12.25" rx="2.5" fill="#134e4a"/>
+  <rect x="9" y="16.15" width="14" height="1.5" rx="0.75" fill="#5eead4"/>
+</svg>
