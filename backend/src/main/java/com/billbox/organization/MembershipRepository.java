@@ -18,6 +18,12 @@ public interface MembershipRepository extends JpaRepository<Membership, UUID> {
             """)
     List<Membership> findByUserId(UUID userId);
 
+    @Query("""
+            select m from Membership m
+            where m.user.id = :userId
+            order by m.createdAt asc
+            fetch first 1 row only
+            """)
     Optional<Membership> findFirstByUserIdOrderByCreatedAtAsc(UUID userId);
 
     @Query("""

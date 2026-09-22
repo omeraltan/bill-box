@@ -16,14 +16,30 @@ import java.util.UUID;
 public interface InvoiceRepository extends JpaRepository<Invoice, UUID>, JpaSpecificationExecutor<Invoice> {
 
     @EntityGraph(attributePaths = {"vendor", "category"})
+    @Query("""
+            select i from Invoice i
+            where i.id = :id
+              and i.organization.id = :organizationId
+            """)
     Optional<Invoice> findByIdAndOrganizationId(UUID id, UUID organizationId);
 
+    @Query("""
+            select i from Invoice i
+            where i.organization.id = :organizationId
+              and i.status in :statuses
+              and i.dueDate <= :date
+            """)
     List<Invoice> findByOrganizationIdAndStatusInAndDueDateLessThanEqual(
             UUID organizationId,
             List<InvoiceStatus> statuses,
             LocalDate date
     );
 
+    @Query("""
+            select i from Invoice i
+            where i.status in :statuses
+              and i.dueDate <= :date
+            """)
     List<Invoice> findByStatusInAndDueDateLessThanEqual(List<InvoiceStatus> statuses, LocalDate date);
 
     @Query("""
@@ -82,8 +98,21 @@ public interface InvoiceRepository extends JpaRepository<Invoice, UUID>, JpaSpec
             """)
     List<Object[]> sumByMonth(UUID organizationId, InvoiceDirection direction, LocalDate from, LocalDate to);
 
+    @Query("""
+            select i from Invoice i
+            where i.organization.id = :organizationId
+            order by i.issueDate desc
+            fetch first 8 rows only
+            """)
     List<Invoice> findTop8ByOrganizationIdOrderByIssueDateDesc(UUID organizationId);
 
+    @Query("""
+            select i from Invoice i
+            where i.organization.id = :organizationId
+              and i.vendor.id = :vendorId
+              and i.direction = :direction
+              and i.status <> :status
+            """)
     List<Invoice> findByOrganizationIdAndVendorIdAndDirectionAndStatusNot(
             UUID organizationId,
             UUID vendorId,
