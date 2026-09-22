@@ -16,5 +16,45 @@ services:
       timeout: 5s
       retries: 10
 
+  mailpit:
+    image: axllent/mailpit:v1.27
+    container_name: billbox-mailpit
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+
+  api:
+    build:
+      context: ./backend
+    container_name: billbox-api
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/billbox
+      SPRING_DATASOURCE_USERNAME: billbox
+      SPRING_DATASOURCE_PASSWORD: billbox
+      BILLBOX_SMTP_HOST: mailpit
+      BILLBOX_SMTP_PORT: 1025
+      BILLBOX_PUBLIC_URL: http://localhost:5173
+      BILLBOX_STORAGE: /data/storage
+    ports:
+      - "8080:8080"
+    volumes:
+      - billbox_storage:/data/storage
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
+
+  web:
+    build:
+      context: ./frontend
+    container_name: billbox-web
+    ports:
+      - "5173:8080"
+    depends_on:
+      api:
+        condition: service_healthy
+
 volumes:
   billbox_pg:
+  billbox_storage:

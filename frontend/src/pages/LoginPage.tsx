@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
@@ -12,6 +12,8 @@ const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export function LoginPage() {
   const { user, login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const passwordReset = Boolean((location.state as { passwordReset?: boolean } | null)?.passwordReset);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -58,6 +60,13 @@ export function LoginPage() {
           <h2>Kasanıza dönün</h2>
           <p>Faturalar, fişler ve garanti belgeleri bu oturumda açılır.</p>
         </header>
+
+        {passwordReset && (
+          <div className="auth-success" role="status">
+            <i className="pi pi-check-circle" aria-hidden="true" />
+            <span>Şifreniz yenilendi. Yeni şifrenizle giriş yapın.</span>
+          </div>
+        )}
 
         {error && (
           <div className="auth-alert" role="alert">
@@ -132,6 +141,10 @@ export function LoginPage() {
             </small>
           )}
         </label>
+
+        <p className="auth-forgot">
+          <Link to="/sifremi-unuttum">Şifremi unuttum</Link>
+        </p>
 
         <Button
           type="submit"

@@ -10,6 +10,8 @@ import { InvoiceDetailPage } from "./pages/InvoiceDetailPage";
 import { InvoiceFormPage } from "./pages/InvoiceFormPage";
 import { InvoicesPage } from "./pages/InvoicesPage";
 import { LoginPage } from "./pages/LoginPage";
+import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
+import { ResetPasswordPage } from "./pages/ResetPasswordPage";
 import { RecurringPage } from "./pages/RecurringPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { ReportsPage } from "./pages/ReportsPage";
@@ -36,6 +38,8 @@ export default function App() {
     <Routes>
       <Route path="/giris" element={<LoginPage />} />
       <Route path="/kayit" element={<RegisterPage />} />
+      <Route path="/sifremi-unuttum" element={<ForgotPasswordPage />} />
+      <Route path="/sifre-yenile" element={<ResetPasswordPage />} />
       <Route
         path="/"
         element={

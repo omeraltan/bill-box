@@ -19,6 +19,18 @@ spring:
     multipart:
       max-file-size: 20MB
       max-request-size: 25MB
+  mail:
+    host: ${BILLBOX_SMTP_HOST:localhost}
+    port: ${BILLBOX_SMTP_PORT:1025}
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
 
 server:
   port: 8080
@@ -31,3 +43,6 @@ billbox:
     root: ${BILLBOX_STORAGE:${user.home}/.billbox/storage}
   cors:
     allowed-origins: http://localhost:5173
+  public-url: ${BILLBOX_PUBLIC_URL:http://localhost:5173}
+  mail:
+    from: ${BILLBOX_MAIL_FROM:Bill Box <noreply@billbox.local>}

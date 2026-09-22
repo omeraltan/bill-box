@@ -6,7 +6,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public record BillBoxProperties(
         Jwt jwt,
         Storage storage,
-        Cors cors
+        Cors cors,
+        String publicUrl,
+        Mail mail
 ) {
     public record Jwt(String secret, long expirationMs) {
     }
@@ -15,5 +17,8 @@ public record BillBoxProperties(
     }
 
     public record Cors(String allowedOrigins) {
+    }
+
+    public record Mail(String from) {
     }
 }

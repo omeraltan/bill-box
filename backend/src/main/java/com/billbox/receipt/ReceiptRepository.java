@@ -15,9 +15,26 @@ import java.util.UUID;
 public interface ReceiptRepository extends JpaRepository<Receipt, UUID> {
 
     @EntityGraph(attributePaths = {"vendor", "category"})
+    @Query("""
+            select r from Receipt r
+            where r.id = :id
+              and r.organization.id = :organizationId
+            """)
     Optional<Receipt> findByIdAndOrganizationId(UUID id, UUID organizationId);
 
     @EntityGraph(attributePaths = "category")
+    @Query(
+            value = """
+                    select r from Receipt r
+                    where r.organization.id = :organizationId
+                      and lower(r.merchantName) like lower(concat('%', :merchantName, '%'))
+                    """,
+            countQuery = """
+                    select count(r) from Receipt r
+                    where r.organization.id = :organizationId
+                      and lower(r.merchantName) like lower(concat('%', :merchantName, '%'))
+                    """
+    )
     Page<Receipt> findByOrganizationIdAndMerchantNameContainingIgnoreCase(
             UUID organizationId,
             String merchantName,
@@ -32,8 +49,17 @@ public interface ReceiptRepository extends JpaRepository<Receipt, UUID> {
             """)
     BigDecimal sumTotal(UUID organizationId, LocalDate from, LocalDate to);
 
+    @Query("""
+            select r from Receipt r
+            where r.organization.id = :organizationId
+              and r.returnUntil between :from and :to
+            """)
     List<Receipt> findByOrganizationIdAndReturnUntilBetween(UUID organizationId, LocalDate from, LocalDate to);
 
     @EntityGraph(attributePaths = "organization")
+    @Query("""
+            select r from Receipt r
+            where r.returnUntil between :from and :to
+            """)
     List<Receipt> findByReturnUntilBetween(LocalDate from, LocalDate to);
 }

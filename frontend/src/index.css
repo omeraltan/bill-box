@@ -647,9 +647,22 @@ a {
   color: #475569;
 }
 
-.auth-switch a {
+.auth-switch a,
+.auth-forgot a {
   color: #0f766e;
   font-weight: 700;
+}
+
+.auth-forgot {
+  margin: 0.85rem 0 0;
+  text-align: right;
+  font-size: 0.85rem;
+}
+
+.auth-success a {
+  color: #065f46;
+  font-weight: 700;
+  text-decoration: underline;
 }
 
 .auth-note {

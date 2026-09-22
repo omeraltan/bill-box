@@ -26,6 +26,20 @@ public final class AuthDtos {
     ) {
     }
 
+    public record ForgotPasswordRequest(
+            @NotBlank @Email @Size(max = 180) String email
+    ) {
+    }
+
+    public record ForgotPasswordResponse(String message) {
+    }
+
+    public record ResetPasswordRequest(
+            @NotBlank String token,
+            @NotBlank @Size(min = 8, max = 72) String password
+    ) {
+    }
+
     public record AuthResponse(
             String token,
             UUID userId,
