@@ -434,16 +434,20 @@ a {
   min-height: 2.35rem;
 }
 
-.auth-points i {
+.auth-points svg {
   width: 2rem;
   height: 2rem;
+  padding: 0.32rem;
+  box-sizing: border-box;
   border-radius: 8px;
-  display: grid;
-  place-items: center;
   color: #99f6e4;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  font-size: 0.85rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .auth-points strong,
@@ -924,6 +928,14 @@ a {
     animation: logo-glow 3.6s ease-in-out infinite;
   }
 
+  .point-icon {
+    animation: point-focus 12s ease-in-out infinite;
+  }
+
+  .point-bill { animation-delay: 0.8s; }
+  .point-receipt { animation-delay: 4.8s; }
+  .point-warranty { animation-delay: 8.8s; }
+
   .vkbd {
     animation: auth-rise 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
@@ -961,6 +973,23 @@ a {
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+@keyframes point-focus {
+  0%, 22%, 100% {
+    transform: translateY(0);
+    color: #99f6e4;
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: none;
+  }
+  7%, 15% {
+    transform: translateY(-2px);
+    color: #f0fdfa;
+    background: rgba(45, 212, 191, 0.16);
+    border-color: rgba(153, 246, 228, 0.55);
+    box-shadow: 0 8px 18px rgba(45, 212, 191, 0.22);
   }
 }
 
